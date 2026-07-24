@@ -1,0 +1,277 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* ── Keyboard focus ────────────────────────────────────────── */
+  /* Visible, on-brand focus ring for keyboard users (mouse clicks
+     don't trigger :focus-visible, so this stays unobtrusive). */
+  :focus-visible {
+    outline: 2px solid rgba(34, 211, 238, 0.7);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  /* ── Reduced motion ────────────────────────────────────────── */
+  /* Belt-and-suspenders alongside Framer Motion's MotionConfig:
+     neutralize CSS animations/transitions for users who opt out. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* ── Scrollbar ─────────────────────────────────────────────── */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(34, 211, 238, 0.22);
+    border-radius: 99px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(34, 211, 238, 0.45);
+  }
+
+  /* ── Selection ─────────────────────────────────────────────── */
+  ::selection {
+    background: rgba(34, 211, 238, 0.22);
+    color: white;
+  }
+
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --radius: 0.625rem;
+  }
+
+  .dark {
+    --background: 224 50% 3%;
+    --foreground: 213 31% 91%;
+    --card: 224 50% 3%;
+    --card-foreground: 213 31% 91%;
+    --popover: 224 45% 5%;
+    --popover-foreground: 213 31% 91%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222 47% 11%;
+    --secondary: 222 47% 9%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 222 47% 9%;
+    /* Lightened from 58% -> 67% L for comfortable WCAG AA contrast on the
+       near-black background used across the site. */
+    --muted-foreground: 215 22% 67%;
+    --accent: 216 34% 14%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 216 34% 14%;
+    --input: 216 34% 14%;
+    --ring: 213 31% 91%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    @apply bg-background text-foreground;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    letter-spacing: -0.025em;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════ */
+/* ═══════════════  Glassmorphism  ═══════════════════════════ */
+/* ═══════════════════════════════════════════════════════════ */
+:root {
+  --glass-bg: rgba(255, 255, 255, 0.78);
+  --glass-border: rgba(15, 23, 42, 0.10);
+  --glass-shadow: 0 20px 60px rgba(2, 6, 23, 0.10);
+}
+
+.dark {
+  --glass-bg: rgba(255, 255, 255, 0.055);
+  --glass-border: rgba(255, 255, 255, 0.11);
+  --glass-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+}
+
+.glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+/* ═══════════════════════════════════════════════════════════ */
+/* ═══════════════  Animations  ══════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════ */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 14px rgba(34, 211, 238, 0.20); }
+  50%       { box-shadow: 0 0 32px rgba(34, 211, 238, 0.45); }
+}
+
+@keyframes float-y {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-7px); }
+}
+
+@keyframes mesh-drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%       { transform: translate(-4%, 3%) scale(1.06); }
+}
+
+/* ═══════════════════════════════════════════════════════════ */
+/* ═══════════════  Layout Utilities  ════════════════════════ */
+/* ═══════════════════════════════════════════════════════════ */
+@layer utilities {
+  .surface {
+    @apply glass rounded-3xl ring-1 ring-black/[0.06] dark:ring-white/[0.07];
+  }
+
+  .surface-hover {
+    @apply transition-all duration-300 will-change-transform
+           hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-500/5;
+  }
+
+  .surface-pad {
+    @apply p-6 sm:p-7;
+  }
+
+  .grid-cards {
+    align-items: stretch;
+  }
+
+  .card-equal {
+    @apply h-full flex flex-col;
+  }
+
+  .clamp-2,
+  .clamp-3,
+  .clamp-4 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .clamp-2 { -webkit-line-clamp: 2; }
+  .clamp-3 { -webkit-line-clamp: 3; }
+  .clamp-4 { -webkit-line-clamp: 4; }
+
+  /* Reusable gradient text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-cyan-400 to-indigo-400 bg-clip-text text-transparent;
+  }
+
+  /* Subtle glow on elements */
+  .glow-cyan {
+    box-shadow: 0 0 24px rgba(34, 211, 238, 0.18);
+  }
+
+  /* Cursor-following spotlight glow, paired with the useCardInteraction hook
+     (src/motion/variants.js), which drives the --spot-x/--spot-y variables. */
+  .spotlight {
+    position: relative;
+    isolation: isolate;
+  }
+  .spotlight::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    background: radial-gradient(
+      480px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+      rgba(34, 211, 238, 0.16),
+      transparent 70%
+    );
+    pointer-events: none;
+  }
+  .spotlight:hover::before {
+    opacity: 1;
+  }
+}
+
+/* ── Tech-stack marquee ─────────────────────────────────────── */
+/* Continuous horizontal scroll built from two identical lists that
+   each translate fully left, producing a seamless, gap-free loop. */
+@keyframes tech-marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.tech-marquee__mask {
+  /* Soft, wide fade at both ends (matches the reference look). */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 12%,
+    #000 88%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 12%,
+    #000 88%,
+    transparent
+  );
+}
+
+.tech-marquee__track {
+  animation: tech-marquee-scroll 40s linear infinite;
+  will-change: transform;
+}
+
+/* Respect reduced-motion: freeze into a static row. */
+@media (prefers-reduced-motion: reduce) {
+  .tech-marquee__track {
+    animation: none;
+  }
+}

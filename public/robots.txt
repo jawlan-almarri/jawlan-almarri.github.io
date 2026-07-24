@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jawlan-almarri.vercel.app/sitemap.xml
