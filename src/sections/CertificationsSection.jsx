@@ -3,6 +3,7 @@ import { BadgeCheck, ShieldCheck } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
 import { SectionShell } from "@/components/layout/SectionShell";
+import { CardRail, RAIL_ITEM_CLASS } from "@/components/common/CardRail";
 import { Reveal, RevealGroup } from "@/components/common/Reveal";
 import { CERTIFICATIONS, SECTIONS } from "@/data/portfolioData";
 
@@ -18,14 +19,18 @@ export function CertificationsSection() {
       {...SECTIONS.certifications}
       icon={<BadgeCheck className="h-5 w-5" />}
     >
-      <RevealGroup className="grid grid-cards items-stretch gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {CERTIFICATIONS.map((c) => (
-          <Reveal key={c.title} className="h-full">
+      {/* RevealGroup stays outside the rail: it needs a real box for its
+          whileInView observer, and variants still reach each Reveal through
+          the rail's plain wrapper. */}
+      <RevealGroup>
+        <CardRail label="certifications">
+          {CERTIFICATIONS.map((c) => (
+            <Reveal key={c.title} className={RAIL_ITEM_CLASS}>
             <a
               href={c.url}
               target="_blank"
               rel="noreferrer"
-              className="group block rounded-3xl outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/30"
+              className="group block h-full rounded-3xl outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/30"
               aria-label={`Verify ${c.title} on INE`}
             >
               <Card className="card-equal surface surface-hover surface-pad shadow-none">
@@ -54,15 +59,16 @@ export function CertificationsSection() {
                       Issued by <span className="font-medium text-foreground/90">{c.issuer}</span>
                     </p>
                   </div>
-                  <span className="mt-0.5 inline-flex shrink-0 items-center gap-1 text-xs font-medium text-cyan-600 transition-colors group-hover:text-cyan-500 dark:text-cyan-400">
+                  <span className="mt-0.5 inline-flex shrink-0 items-center gap-1 text-xs font-medium text-cyan-700 transition-colors group-hover:text-cyan-600 dark:text-cyan-400 dark:group-hover:text-cyan-300">
                     <ShieldCheck className="h-3.5 w-3.5" />
                     Verify
                   </span>
                 </div>
               </Card>
             </a>
-          </Reveal>
-        ))}
+            </Reveal>
+          ))}
+        </CardRail>
       </RevealGroup>
     </SectionShell>
   );

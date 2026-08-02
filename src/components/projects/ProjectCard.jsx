@@ -37,12 +37,10 @@ export function ProjectCard({ project, featured = false }) {
         className="spotlight surface group flex h-full flex-col overflow-hidden shadow-none"
       >
         {/* Cover */}
-        <div
-          className={cn(
-            "relative overflow-hidden",
-            featured ? "aspect-[16/9] sm:aspect-[21/9]" : "aspect-[16/9]"
-          )}
-        >
+        {/* Uniform ratio: in the rail every slide is the same width, so the
+            old wider crop for `featured` would just make that card shorter
+            than its neighbours. The badge carries the emphasis instead. */}
+        <div className="relative aspect-[16/9] overflow-hidden">
           <motion.img
             src={project.cover}
             alt={`${title} cover`}
@@ -56,7 +54,7 @@ export function ProjectCard({ project, featured = false }) {
           <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
 
           {featured ? (
-            <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full border border-cyan-400/30 bg-black/40 px-3 py-1 font-mono text-[10px] uppercase tracking-widest text-cyan-200 backdrop-blur">
+            <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full border border-cyan-400/30 bg-black/70 px-3 py-1 font-mono text-[10px] uppercase tracking-widest text-cyan-200 backdrop-blur">
               <Sparkles className="h-3 w-3" />
               Featured
             </span>
@@ -122,7 +120,7 @@ export function ProjectCard({ project, featured = false }) {
                   href={l.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-sm font-medium text-cyan-600 transition hover:text-cyan-500 dark:text-cyan-300 dark:hover:text-cyan-200"
+                  className="inline-flex items-center gap-1 text-sm font-medium text-cyan-700 transition hover:text-cyan-600 dark:text-cyan-300 dark:hover:text-cyan-200"
                 >
                   {l.label}
                   <ArrowUpRight className="h-3.5 w-3.5" />

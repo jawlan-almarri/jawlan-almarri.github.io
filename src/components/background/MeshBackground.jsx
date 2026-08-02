@@ -38,6 +38,24 @@ export function MeshBackground({ y1, y2 }) {
         aria-hidden="true"
       />
 
+      {/* Engineering grid — purely static (no keyframes, no scroll link), so it
+          adds structure without spending any of the motion budget. Masked to an
+          ellipse near the top so it reads as texture behind the hero and fades
+          out before it can compete with the content below. */}
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage:
+            "linear-gradient(to right, var(--grid-line) 1px, transparent 1px), linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px)",
+          backgroundSize: "64px 64px",
+          maskImage:
+            "radial-gradient(ellipse 75% 55% at 50% 0%, #000 35%, transparent 100%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse 75% 55% at 50% 0%, #000 35%, transparent 100%)",
+        }}
+        aria-hidden="true"
+      />
+
       {/* Fine grain texture for tactile depth */}
       <div
         className="absolute inset-0 opacity-[0.035] mix-blend-overlay"

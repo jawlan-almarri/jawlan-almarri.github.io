@@ -46,7 +46,7 @@ function ExperienceCard({ role }) {
                 )}
                 <div className="min-w-0">
                   <h3 className="text-base font-bold leading-snug tracking-tight">{role.role}</h3>
-                  <p className="mt-0.5 text-sm font-medium text-cyan-600 dark:text-cyan-400/80">
+                  <p className="mt-0.5 text-sm font-medium text-cyan-700 dark:text-cyan-400/80">
                     {role.org}
                   </p>
                 </div>

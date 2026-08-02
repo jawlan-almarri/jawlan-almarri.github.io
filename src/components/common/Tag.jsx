@@ -18,7 +18,8 @@ const TONES = {
     "border-indigo-500/25 bg-indigo-500/10 text-indigo-700 hover:border-indigo-500/40 hover:bg-indigo-500/15 dark:text-indigo-200",
   neutral: "border-border bg-muted text-foreground/80",
   // For placing on top of imagery (dark, translucent, legible).
-  overlay: "border-white/15 bg-black/35 text-white/90 backdrop-blur",
+  // /35 left white-on-image tags at 2.26:1; /60 measures ~5:1.
+  overlay: "border-white/15 bg-black/60 text-white/90 backdrop-blur",
 };
 
 const SIZES = {

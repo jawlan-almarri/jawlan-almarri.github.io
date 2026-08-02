@@ -53,14 +53,20 @@ export const LINKS = {
 /* ── Navigation ──────────────────────────────────────────────────────────── */
 
 /** Order here drives the nav menu, the scroll-spy, and the on-page sequence. */
+/**
+ * Development evidence leads: Experience → Projects → Skills. Education,
+ * research, and the (security-focused) certifications follow, so the page
+ * reads as a software developer who also specialises in security rather than
+ * the other way round. Keep App.jsx's render order in sync with this list.
+ */
 export const NAV_ITEMS = [
   { id: "hero", label: "Home" },
   { id: "experience", label: "Experience" },
+  { id: "projects", label: "Projects" },
+  { id: "skills", label: "Skills" },
   { id: "education", label: "Education" },
   { id: "publications", label: "Publications" },
   { id: "certifications", label: "Certifications" },
-  { id: "skills", label: "Skills" },
-  { id: "projects", label: "Projects" },
   { id: "activities", label: "Activities" },
   { id: "achievements", label: "Achievements" },
   { id: "contact", label: "Contact" },
@@ -121,6 +127,23 @@ export const HERO = {
   summary:
     "Full-Stack Software Developer with experience building modern web applications using contemporary technologies. Passionate about creating scalable, user-focused solutions with a strong foundation in cybersecurity and secure software development.",
 };
+
+/**
+ * Decorative shell session rendered beside the hero on large screens.
+ * Purely presentational — every fact here is also stated in the sections
+ * below, so TerminalCard hides it from assistive tech.
+ */
+export const HERO_TERMINAL = [
+  { type: "comment", text: "# a quick introduction" },
+  { type: "input", text: "whoami" },
+  { type: "output", text: "Full-Stack Software Developer" },
+  { type: "input", text: "cat stack.txt" },
+  { type: "output", text: "React · Next.js · ASP.NET · Python" },
+  { type: "input", text: "ls certifications/" },
+  { type: "output", text: "eCDFP  eJPT  eMAPT" },
+  { type: "input", text: "git log --oneline -1" },
+  { type: "output", text: "1st place — PROJECTS Expo 2024" },
+];
 
 /* ── Experience ──────────────────────────────────────────────────────────── */
 

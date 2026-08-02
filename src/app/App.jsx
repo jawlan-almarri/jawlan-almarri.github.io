@@ -1,5 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { motion, MotionConfig, useScroll, useTransform } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  MotionConfig,
+  useMotionValueEvent,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 import { Analytics } from "@vercel/analytics/react";
 import { ArrowUp, Linkedin, Mail } from "lucide-react";
 
@@ -50,9 +57,25 @@ export default function App() {
   const blobY1 = useTransform(scrollY, [0, 700], [0, 90]);
   const blobY2 = useTransform(scrollY, [0, 700], [0, -70]);
 
+  // Back-to-top is pointless while the hero is still in view, so it only
+  // appears once the reader is roughly a screen down. Seeded from the current
+  // offset so a reload part-way down the page still shows it immediately.
+  const [showBackToTop, setShowBackToTop] = useState(
+    () => typeof window !== "undefined" && window.scrollY > 500,
+  );
+  useMotionValueEvent(scrollY, "change", (y) => setShowBackToTop(y > 500));
+
   return (
     <MotionConfig reducedMotion="user">
     <div className="min-h-screen text-foreground">
+      {/* Skip link — ten nav items sit between the page start and the content. */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[110] focus:rounded-xl focus:border focus:border-border focus:bg-background focus:px-4 focus:py-3 focus:text-sm focus:font-medium focus:shadow-lg"
+      >
+        Skip to main content
+      </a>
+
       {/* Scroll progress bar */}
       <motion.div
         className="fixed top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-cyan-500 via-indigo-500 to-violet-500 z-[100] origin-left"
@@ -71,15 +94,16 @@ export default function App() {
         onToggleTheme={toggleTheme}
       />
 
-      <main className="pt-28">
+      <main id="main-content" tabIndex={-1} className="pt-28">
         <HeroSection />
         <TechMarquee />
+        {/* Order mirrors NAV_ITEMS in portfolioData.js — keep the two in sync. */}
         <ExperienceSection />
+        <ProjectsSection />
+        <SkillsSection />
         <EducationSection />
         <PublicationsSection />
         <CertificationsSection />
-        <SkillsSection />
-        <ProjectsSection />
         <ActivitiesSection />
         <AchievementsSection />
         <ContactSection />
@@ -113,21 +137,31 @@ export default function App() {
             </div>
           </div>
 
-          <p className="mt-6 text-xs text-muted-foreground/70">© 2026 {IDENTITY.name} · All rights reserved</p>
+          {/* Alpha here fails AA in light mode whatever the value — the token
+              is already at 4.74:1 there (/80 measured 3.23:1). Use it neat. */}
+          <p className="mt-6 text-xs text-muted-foreground">© 2026 {IDENTITY.name} · All rights reserved</p>
         </footer>
       </main>
 
       {/* Back to top */}
-      <motion.button
-        type="button"
-        onClick={() => handleNavigate("hero")}
-        className="fixed bottom-6 right-6 z-40 inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-r from-cyan-500 to-indigo-500 text-black shadow-lg shadow-cyan-500/25"
-        whileHover={{ scale: 1.08 }}
-        whileTap={{ scale: 0.94 }}
-        aria-label="Back to top"
-      >
-        <ArrowUp className="h-5 w-5" />
-      </motion.button>
+      <AnimatePresence>
+        {showBackToTop && (
+          <motion.button
+            type="button"
+            onClick={() => handleNavigate("hero")}
+            className="fixed bottom-6 right-6 z-40 inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-r from-cyan-500 to-indigo-500 text-black shadow-lg shadow-cyan-500/25"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.18, ease: "easeOut" }}
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.94 }}
+            aria-label="Back to top"
+          >
+            <ArrowUp className="h-5 w-5" />
+          </motion.button>
+        )}
+      </AnimatePresence>
 
       {/* Privacy-friendly analytics — only sends data on Vercel deployments. */}
       <Analytics />

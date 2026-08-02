@@ -67,7 +67,7 @@ export function ContactSection() {
               {/* LinkedIn */}
               <Button
                 asChild
-                className="h-11 w-full gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-500 font-semibold text-white shadow-lg shadow-cyan-500/20 transition-all hover:opacity-90"
+                className="h-11 w-full gap-2 rounded-xl bg-gradient-to-r from-cyan-700 to-indigo-600 font-semibold text-white shadow-lg shadow-cyan-500/20 transition-all hover:opacity-90"
               >
                 <a href={LINKS.linkedin} target="_blank" rel="noreferrer" aria-label="Open LinkedIn">
                   <Linkedin className="h-4 w-4" />

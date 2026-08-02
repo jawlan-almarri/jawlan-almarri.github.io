@@ -17,31 +17,34 @@ export function Navbar({
   return (
     <header className="fixed inset-x-0 top-4 z-50">
       <div className="mx-auto max-w-6xl px-4">
-        <div className="glass flex items-center justify-between rounded-2xl px-5 py-3">
+        <div className="glass flex items-center justify-between gap-3 rounded-2xl px-5 py-3">
 
           {/* Brand */}
           <button
             type="button"
             onClick={() => onNavigate("hero")}
-            className="flex items-center gap-2.5 text-left"
+            className="flex shrink-0 items-center gap-2.5 text-left"
             aria-label="Go to top"
           >
             <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl border border-cyan-500/25 bg-gradient-to-br from-cyan-500/20 via-indigo-500/15 to-violet-500/10">
-              <Sparkles className="h-4 w-4 text-cyan-400" />
+              <Sparkles className="h-4 w-4 text-cyan-400" aria-hidden="true" />
             </span>
             <div className="leading-tight">
               <div className="text-sm font-semibold tracking-tight">Jawlan Almarri</div>
-              <div className="hidden text-[10px] text-muted-foreground sm:block">{TAGLINE}</div>
+              <div className="hidden text-[10px] text-muted-foreground sm:block">
+                {TAGLINE}
+              </div>
             </div>
           </button>
 
           {/* Actions */}
-          <div className="flex items-center gap-2">
-            {/* Contact CTA */}
+          <div className="flex shrink-0 items-center gap-2">
+            {/* Contact CTA. Hidden below `sm`, where the brand plus three
+                controls overflow the bar. */}
             <Button
               variant="outline"
               onClick={() => onNavigate("contact")}
-              className="h-9 rounded-xl border-cyan-400/25 bg-cyan-500/10 px-4 text-xs font-medium text-cyan-600 dark:text-cyan-50 backdrop-blur hover:bg-cyan-500/20 hover:text-cyan-700 dark:hover:text-white transition-all"
+              className="hidden h-11 rounded-xl border-cyan-400/25 bg-cyan-500/10 px-4 text-xs font-medium text-cyan-700 backdrop-blur transition-all hover:bg-cyan-500/20 hover:text-cyan-800 dark:text-cyan-50 dark:hover:text-white sm:inline-flex"
             >
               Contact Me
             </Button>
@@ -62,7 +65,7 @@ export function Navbar({
                     exit={{ rotate: 90, opacity: 0, scale: 0.7 }}
                     transition={{ duration: 0.18 }}
                   >
-                    <Sun className="h-4 w-4" />
+                    <Sun className="h-4 w-4" aria-hidden="true" />
                   </motion.span>
                 ) : (
                   <motion.span
@@ -72,13 +75,13 @@ export function Navbar({
                     exit={{ rotate: -90, opacity: 0, scale: 0.7 }}
                     transition={{ duration: 0.18 }}
                   >
-                    <Moon className="h-4 w-4" />
+                    <Moon className="h-4 w-4" aria-hidden="true" />
                   </motion.span>
                 )}
               </AnimatePresence>
             </button>
 
-            {/* Menu toggle */}
+            {/* Menu toggle — sole entry point to the sections at every width. */}
             <button
               type="button"
               onClick={onToggleMenu}
@@ -96,7 +99,7 @@ export function Navbar({
                     exit={{ rotate: 90, opacity: 0 }}
                     transition={{ duration: 0.15 }}
                   >
-                    <X className="h-4 w-4" />
+                    <X className="h-4 w-4" aria-hidden="true" />
                   </motion.span>
                 ) : (
                   <motion.span
@@ -106,7 +109,7 @@ export function Navbar({
                     exit={{ rotate: -90, opacity: 0 }}
                     transition={{ duration: 0.15 }}
                   >
-                    <Menu className="h-4 w-4" />
+                    <Menu className="h-4 w-4" aria-hidden="true" />
                   </motion.span>
                 )}
               </AnimatePresence>
@@ -145,6 +148,7 @@ export function Navbar({
                       key={item.id}
                       type="button"
                       onClick={() => onNavigate(item.id)}
+                      aria-current={activeSectionId === item.id ? "true" : undefined}
                       className={`flex items-center justify-between rounded-xl px-4 py-3 text-left text-sm transition hover:bg-muted ${
                         activeSectionId === item.id
                           ? "bg-muted text-foreground"

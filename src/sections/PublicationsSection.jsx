@@ -78,7 +78,7 @@ export function PublicationsSection() {
               <div className="mt-6 flex flex-wrap items-center gap-4">
                 <Button
                   asChild
-                  className="h-10 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-500 font-medium text-white hover:opacity-95"
+                  className="h-10 rounded-xl bg-gradient-to-r from-cyan-700 to-indigo-600 font-medium text-white hover:opacity-95"
                 >
                   <a
                     href={p.url ?? p.doi}

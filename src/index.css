@@ -16,6 +16,14 @@
     border-radius: 6px;
   }
 
+  /* ── Pointer affordance ────────────────────────────────────── */
+  /* Browsers default <button> to the arrow cursor, so every button on the
+     site read as non-interactive. Set once here rather than per-component. */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]) {
+    cursor: pointer;
+  }
+
   /* ── Reduced motion ────────────────────────────────────────── */
   /* Belt-and-suspenders alongside Framer Motion's MotionConfig:
      neutralize CSS animations/transitions for users who opt out. */
@@ -45,9 +53,11 @@
   }
 
   /* ── Selection ─────────────────────────────────────────────── */
+  /* Keep the text's own colour: a fixed white washed out against the
+     translucent cyan wash in light mode. */
   ::selection {
     background: rgba(34, 211, 238, 0.22);
-    color: white;
+    color: inherit;
   }
 
   :root {
@@ -76,7 +86,9 @@
   .dark {
     --background: 224 50% 3%;
     --foreground: 213 31% 91%;
-    --card: 224 50% 3%;
+    /* Lifted slightly off --background so cards read as raised surfaces
+       even where the .glass overlay is absent. */
+    --card: 224 45% 6%;
     --card-foreground: 213 31% 91%;
     --popover: 224 45% 5%;
     --popover-foreground: 213 31% 91%;
@@ -129,12 +141,19 @@
   --glass-bg: rgba(255, 255, 255, 0.78);
   --glass-border: rgba(15, 23, 42, 0.10);
   --glass-shadow: 0 20px 60px rgba(2, 6, 23, 0.10);
+  /* Decorative texture tones, kept beside the glass tokens they sit under. */
+  --grid-line: rgba(15, 23, 42, 0.055);
+  --dot-color: rgba(15, 23, 42, 0.05);
+  --edge-glow: rgba(8, 145, 178, 0.35);
 }
 
 .dark {
   --glass-bg: rgba(255, 255, 255, 0.055);
   --glass-border: rgba(255, 255, 255, 0.11);
   --glass-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+  --grid-line: rgba(255, 255, 255, 0.045);
+  --dot-color: rgba(255, 255, 255, 0.04);
+  --edge-glow: rgba(34, 211, 238, 0.35);
 }
 
 .glass {
@@ -199,6 +218,17 @@
   .clamp-3 { -webkit-line-clamp: 3; }
   .clamp-4 { -webkit-line-clamp: 4; }
 
+  /* Scroll rails stay swipeable but drop the bar, which would otherwise sit
+     under the cards on desktop. The rail is focusable and arrow-paged, so
+     scrollability is still discoverable without it. */
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
   /* Reusable gradient text */
   .gradient-text {
     @apply bg-gradient-to-r from-cyan-400 to-indigo-400 bg-clip-text text-transparent;
@@ -230,6 +260,61 @@
     pointer-events: none;
   }
   .spotlight:hover::before {
+    opacity: 1;
+  }
+
+  /* Hover ornament for cards: a fine dot matrix plus a gradient edge ring.
+     Adapted from 21st.dev's Bento Grid (kokonutd) — the technique, re-cut to
+     this site's tokens instead of its hard-coded gray/black palette.
+
+     Uses ::after because .spotlight already owns ::before on several of the
+     same cards. Opacity-only transitions, revealed on hover rather than
+     looping, per the excessive/continuous-motion guidance. */
+  /* Own a stacking context so the pseudo-elements below anchor to the card
+     itself — .surface-hover is not otherwise positioned. */
+  .surface-hover {
+    position: relative;
+  }
+
+  .surface-hover::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    background-image: radial-gradient(
+      circle at center,
+      var(--dot-color) 1px,
+      transparent 1px
+    );
+    background-size: 4px 4px;
+  }
+
+  .surface-hover:hover::after {
+    opacity: 1;
+  }
+
+  /* Gradient hairline along the edge, drawn as a masked 1px inset ring.
+     Scoped away from .spotlight cards, which already own ::before. */
+  .surface-hover:not(.spotlight)::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    padding: 1px;
+    background: linear-gradient(135deg, transparent, var(--edge-glow), transparent);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+  }
+
+  .surface-hover:not(.spotlight):hover::before {
     opacity: 1;
   }
 }
